@@ -26,20 +26,31 @@ const categories = [
   ["El Mejor de SlowCero", "Vota por el mejor de todo SlowCero.", Trophy],
 ];
 
-const nominees: Record<string, string[]> = {
-  "Mejor Mujer": ["Fernanda", "ange", "joki", "ali", "doll", "Izly"],
-  "Mejor Hombre": ["Nominado 1", "Nominado 2", "Nominado 3"],
-  "Mejor Owner": ["Nominado 1", "Nominado 2", "Nominado 3"],
-  "Mejor OG": ["Nominado 1", "Nominado 2", "Nominado 3"],
-  "Persona Más Importante del Server": ["Nominado 1", "Nominado 2", "Nominado 3"],
-  "Mejor Pareja del Server": ["Nominado 1", "Nominado 2", "Nominado 3"],
-  "El Mejor de SlowCero": ["Nominado 1", "Nominado 2", "Nominado 3"],
+const nominees: Record<string, { alias: string; user: string }[]> = {
+  "Mejor Mujer": [
+    { alias: "Fernanda", user: "blnvq." },
+    { alias: "ange", user: "tteamu" },
+    { alias: "joki", user: "18kiss" },
+    { alias: "ali", user: "alixexxx" },
+    { alias: "doll", user: "jskhx" },
+    { alias: "Izly", user: "weritafresa" },
+    { alias: "lala", user: "lovemanipulation" },
+  ],
+  "Mejor Hombre": [
+    { alias: "Nominado 1", user: "usuario1" },
+    { alias: "Nominado 2", user: "usuario2" },
+    { alias: "Nominado 3", user: "usuario3" },
+  ],
+  "Mejor Owner": [],
+  "Mejor OG": [],
+  "Persona Más Importante del Server": [],
+  "Mejor Pareja del Server": [],
+  "El Mejor de SlowCero": [],
 };
 
 export default function App() {
   const [page, setPage] = useState("home");
   const [selected, setSelected] = useState<string | null>(null);
-
   const [voted, setVoted] = useState<string[]>(
     JSON.parse(localStorage.getItem("votes") || "[]")
   );
@@ -73,28 +84,13 @@ export default function App() {
         </div>
 
         <nav>
-          <button
-            onClick={() => {
-              setPage("home");
-              setSelected(null);
-            }}
-          >
+          <button onClick={() => { setPage("home"); setSelected(null); }}>
             Inicio
           </button>
-          <button
-            onClick={() => {
-              setPage("categories");
-              setSelected(null);
-            }}
-          >
+          <button onClick={() => { setPage("categories"); setSelected(null); }}>
             Categorías
           </button>
-          <button
-            onClick={() => {
-              setPage("results");
-              setSelected(null);
-            }}
-          >
+          <button onClick={() => { setPage("results"); setSelected(null); }}>
             Resultados
           </button>
         </nav>
@@ -174,11 +170,11 @@ export default function App() {
 
           <div className="grid">
             {(nominees[selected] || []).map((n) => (
-              <div className="card nominee" key={n}>
-                <div className="avatar">{n[0].toUpperCase()}</div>
+              <div className="card nominee" key={n.alias}>
+                <div className="avatar">{n.alias[0].toUpperCase()}</div>
 
-                <h3>{n}</h3>
-                <p>@{n.toLowerCase()}</p>
+                <h3>{n.alias}</h3>
+                <p>@{n.user}</p>
 
                 <button className="primary" onClick={() => vote(selected)}>
                   Votar
