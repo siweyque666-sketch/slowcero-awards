@@ -6,7 +6,6 @@ import {
   Users,
   Crown,
   Star,
-  Heart,
   Award,
 } from "lucide-react";
 import "./App.css";
@@ -21,8 +20,7 @@ const categories = [
   ["Mejor Hombre", "Vota por el hombre más destacado.", Users],
   ["Mejor Owner", "Vota por el mejor owner.", Crown],
   ["Mejor OG", "Vota por la persona más OG.", Trophy],
-  ["Persona Más Importante del Server", "Vota por quien más representa al server.", Award],
-  ["Mejor Pareja del Server", "Vota por la mejor pareja.", Heart],
+  ["El Más Meme del Server", "Vota por la persona más meme del servidor.", Award],
   ["El Mejor de SlowCero", "Vota por el mejor de todo SlowCero.", Trophy],
 ];
 
@@ -36,16 +34,61 @@ const nominees: Record<string, { alias: string; user: string }[]> = {
     { alias: "Izly", user: "weritafresa" },
     { alias: "lala", user: "lovemanipulation" },
   ],
+
   "Mejor Hombre": [
-    { alias: "Nominado 1", user: "usuario1" },
-    { alias: "Nominado 2", user: "usuario2" },
-    { alias: "Nominado 3", user: "usuario3" },
+    { alias: "kevin", user: "3t24" },
+    { alias: "slow", user: "324g." },
+    { alias: "wero", user: "wero.0" },
+    { alias: "kled", user: "onlymexicali" },
+    { alias: "Gabriel", user: "gabntxl0l" },
+    { alias: "xazf", user: "f8v9" },
+    { alias: "Axel", user: "aaxxelx" },
+    { alias: "Alejandro know", user: "3gh7w" },
   ],
-  "Mejor Owner": [],
-  "Mejor OG": [],
-  "Persona Más Importante del Server": [],
-  "Mejor Pareja del Server": [],
-  "El Mejor de SlowCero": [],
+
+  "Mejor Owner": [
+    { alias: "wero", user: "wero.0" },
+    { alias: "slow", user: "324g." },
+    { alias: "kled", user: "onlymexicali" },
+  ],
+
+  "Mejor OG": [
+    { alias: "slow", user: "324g." },
+    { alias: "ange", user: "tteamu" },
+    { alias: "asheee", user: "ricoysuavee" },
+    { alias: "joki", user: "18kiss" },
+    { alias: "mari", user: "18savior" },
+    { alias: "kled", user: "onlymexicali" },
+    { alias: "dessy", user: "blodyx_o" },
+    { alias: "vale", user: "zombiefeelings" },
+    { alias: "Gabriel", user: "gabntxl0l" },
+    { alias: "tefy", user: "desmembrada." },
+    { alias: "gioo", user: "lujuriaeterna" },
+    { alias: "lala", user: "lovemanipulation" },
+  ],
+
+  "El Más Meme del Server": [
+    { alias: "Alejandro know", user: "3gh7w" },
+    { alias: "Ilicita", user: "jakajshsja" },
+    { alias: "ondearte", user: "mysoundishigh" },
+  ],
+
+  "El Mejor de SlowCero": [
+    { alias: "slow", user: "324g." },
+    { alias: "ange", user: "tteamu" },
+    { alias: "asheee", user: "ricoysuavee" },
+    { alias: "joki", user: "18kiss" },
+    { alias: "mari", user: "18savior" },
+    { alias: "kled", user: "onlymexicali" },
+    { alias: "dessy", user: "blodyx_o" },
+    { alias: "vale", user: "zombiefeelings" },
+    { alias: "Gabriel", user: "gabntxl0l" },
+    { alias: "tefy", user: "desmembrada." },
+    { alias: "gioo", user: "lujuriaeterna" },
+    { alias: "lala", user: "lovemanipulation" },
+    { alias: "wero", user: "wero.0" },
+    { alias: "Fernanda", user: "blnvq." },
+  ],
 };
 
 export default function App() {
@@ -99,9 +142,7 @@ export default function App() {
       {page === "home" && (
         <main className="hero">
           <img className="logo" src={LOGO} alt="SlowCero Awards" />
-
           <h1>SLOWCERO AWARDS 2026</h1>
-
           <p>
             Vota por los miembros más destacados de la comunidad SlowCero y
             ayuda a decidir quiénes serán los ganadores oficiales.
@@ -125,7 +166,7 @@ export default function App() {
 
           <div className="stats">
             <div>Comunidad Activa</div>
-            <div>7 Categorías</div>
+            <div>6 Categorías</div>
             <div>Evento 2026</div>
           </div>
         </main>
@@ -134,7 +175,6 @@ export default function App() {
       {page === "categories" && !selected && (
         <main>
           <h2>Categorías oficiales</h2>
-
           <p className="muted">
             Los resultados permanecerán ocultos hasta la revelación oficial de
             los SlowCero Awards 2026.
@@ -145,7 +185,6 @@ export default function App() {
               <div className="card" key={name}>
                 <Icon className="icon" />
                 <span className="num">#{i + 1}</span>
-
                 <h3>{name}</h3>
                 <p>{desc}</p>
 
@@ -165,14 +204,12 @@ export default function App() {
           </button>
 
           <h2>{selected}</h2>
-
           <p className="muted">Los votos no se muestran públicamente.</p>
 
           <div className="grid">
             {(nominees[selected] || []).map((n) => (
-              <div className="card nominee" key={n.alias}>
+              <div className="card nominee" key={`${n.alias}-${n.user}`}>
                 <div className="avatar">{n.alias[0].toUpperCase()}</div>
-
                 <h3>{n.alias}</h3>
                 <p>@{n.user}</p>
 
@@ -188,9 +225,7 @@ export default function App() {
       {page === "results" && (
         <main className="locked">
           <Lock size={55} />
-
           <h2>Resultados ocultos</h2>
-
           <p>
             Los ganadores serán revelados durante el evento oficial de SlowCero
             Awards 2026.
