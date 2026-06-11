@@ -8,7 +8,13 @@ import {
   Star,
   Award,
 } from "lucide-react";
+import { createClient } from "@supabase/supabase-js";
 import "./App.css";
+
+const supabase = createClient(
+  "https://ihdjkreiwiffpijjlnju.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImloZGprcmVpd2lmZnBpampsbmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNDY1MjgsImV4cCI6MjA5NjcyMjUyOH0.D93aQOXq7YAJmh_egGYsj5LzAXbBrElXHZiRhWdVmuY"
+);
 
 const DISCORD = "https://discord.gg/slw";
 
@@ -98,15 +104,27 @@ export default function App() {
     JSON.parse(localStorage.getItem("votes") || "[]")
   );
 
-  function vote(category: string) {
+  async function vote(category: string, nominee: string) {
     if (voted.includes(category)) {
       alert("Ya votaste en esta categoría.");
+      return;
+    }
+
+    const { error } = await supabase.from("votes").insert({
+      category,
+      nominee,
+    });
+
+    if (error) {
+      alert("Error guardando el voto.");
+      console.error(error);
       return;
     }
 
     const updated = [...voted, category];
     setVoted(updated);
     localStorage.setItem("votes", JSON.stringify(updated));
+
     alert("Tu voto fue registrado correctamente.");
   }
 
@@ -142,7 +160,9 @@ export default function App() {
       {page === "home" && (
         <main className="hero">
           <img className="logo" src={LOGO} alt="SlowCero Awards" />
+
           <h1>SLOWCERO AWARDS 2026</h1>
+
           <p>
             Vota por los miembros más destacados de la comunidad SlowCero y
             ayuda a decidir quiénes serán los ganadores oficiales.
@@ -175,6 +195,7 @@ export default function App() {
       {page === "categories" && !selected && (
         <main>
           <h2>Categorías oficiales</h2>
+
           <p className="muted">
             Los resultados permanecerán ocultos hasta la revelación oficial de
             los SlowCero Awards 2026.
@@ -185,6 +206,7 @@ export default function App() {
               <div className="card" key={name}>
                 <Icon className="icon" />
                 <span className="num">#{i + 1}</span>
+
                 <h3>{name}</h3>
                 <p>{desc}</p>
 
@@ -204,16 +226,21 @@ export default function App() {
           </button>
 
           <h2>{selected}</h2>
+
           <p className="muted">Los votos no se muestran públicamente.</p>
 
           <div className="grid">
             {(nominees[selected] || []).map((n) => (
               <div className="card nominee" key={`${n.alias}-${n.user}`}>
                 <div className="avatar">{n.alias[0].toUpperCase()}</div>
+
                 <h3>{n.alias}</h3>
                 <p>@{n.user}</p>
 
-                <button className="primary" onClick={() => vote(selected)}>
+                <button
+                  className="primary"
+                  onClick={() => vote(selected, n.alias)}
+                >
                   Votar
                 </button>
               </div>
@@ -225,7 +252,9 @@ export default function App() {
       {page === "results" && (
         <main className="locked">
           <Lock size={55} />
+
           <h2>Resultados ocultos</h2>
+
           <p>
             Los ganadores serán revelados durante el evento oficial de SlowCero
             Awards 2026.
